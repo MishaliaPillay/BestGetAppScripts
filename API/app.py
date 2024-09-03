@@ -1,5 +1,11 @@
+import sys
+import os
 from flask import Flask, jsonify, request, g
 import logging
+
+#Add the parent directory to the sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from Database.database import create_connection, close_connection
 
 app = Flask(__name__)
