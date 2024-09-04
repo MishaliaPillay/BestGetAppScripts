@@ -3,9 +3,10 @@ import os
 from flask import Flask, jsonify, request, g
 import logging
 
-#Add the parent directory to the sys.path
+# Add the parent directory to the sys.path to import modules correctly
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+# Import the database connection functions
 from Database.database import create_connection, close_connection
 
 app = Flask(__name__)
@@ -16,7 +17,9 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 def get_db():
     """Opens a new database connection if there is none yet for the current application context."""
     if 'db' not in g:
-        g.db = create_connection('products.db')
+        # Construct the full path to the products.db file
+        db_path = os.path.join(os.path.dirname(__file__), '../database/products.db')
+        g.db = create_connection(db_path)
     return g.db
 
 @app.before_request
@@ -28,7 +31,7 @@ def log_response_info(response):
     logging.info(f"Response: {response.status_code}")
     return response
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def home():
     return "Welcome to the Price Comparison API"
 
