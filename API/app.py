@@ -1,13 +1,14 @@
-import sys
-import os
 from flask import Flask, jsonify, request, g
 import logging
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'DatabaseScripts')))
 
-# Add the parent directory to the sys.path to import modules correctly
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from database import create_connection, close_connection#type:ignore
 
-# Import the database connection functions
-from Database.database import create_connection, close_connection
+
+# Dynamically get the absolute path to the database file
+db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'DatabaseScripts', 'products.db')
 
 app = Flask(__name__)
 
@@ -17,9 +18,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 def get_db():
     """Opens a new database connection if there is none yet for the current application context."""
     if 'db' not in g:
-        # Construct the full path to the products.db file
-        db_path = os.path.join(os.path.dirname(__file__), '../database/products.db')
-        g.db = create_connection(db_path)
+         g.db = create_connection(db_path)
     return g.db
 
 @app.before_request
@@ -31,7 +30,7 @@ def log_response_info(response):
     logging.info(f"Response: {response.status_code}")
     return response
 
-@app.route('/', methods=['GET'])
+@app.route('/')
 def home():
     return "Welcome to the Price Comparison API"
 
