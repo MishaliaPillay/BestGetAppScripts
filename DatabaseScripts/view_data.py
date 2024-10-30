@@ -16,7 +16,7 @@ def view_data():
         logging.error(f"Database file '{db_path}' not found.")
         return
     
-    # Connecting to our database file 'products.db'
+    # Connecting to  database file 'products.db'
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()  # We'll use this cursor to run SQL queries
     
@@ -28,7 +28,7 @@ def view_data():
     
     logging.info(f"Number of rows fetched: {len(rows)}")  # Log how many rows we got
 
-    # If we found some rows, print each one; otherwise, let the user know there's no data
+    # If  found some rows, print each one; otherwise, let the user know there's no data
     if rows:
         for row in rows:
             try:

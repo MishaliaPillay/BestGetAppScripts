@@ -23,7 +23,7 @@ def extract_product_info(driver):
     """
     products = []
 
-    try:
+    try: # Wait until the banner wrapper is present
         WebDriverWait(driver, 50).until(
             expected_conditions.presence_of_element_located((By.CSS_SELECTOR, "div.banner-wrapper"))
         )
@@ -37,7 +37,7 @@ def extract_product_info(driver):
             if new_height == last_height:
                 break
             last_height = new_height
-
+ # Wait until all product items are present
         WebDriverWait(driver, 50).until(
             expected_conditions.presence_of_all_elements_located((By.CSS_SELECTOR, "div.product-list__item"))
         )
@@ -54,13 +54,13 @@ def extract_product_info(driver):
             image_src = None
             product_name = None
             product_price = None
-
+# Try to find the product image
             try:
                 product_image = item.find_element(By.CSS_SELECTOR, "div.product--image > img")
                 image_src = product_image.get_attribute("src")
             except Exception as e:
                 logging.debug(f"Error finding product image: {e}")
-
+# Try to find the product name
             try:
                 product_name_element = item.find_element(By.CSS_SELECTOR, "div.range--title.product-card__name > a")
                 product_name = product_name_element.text
@@ -71,13 +71,13 @@ def extract_product_info(driver):
                     product_name = product_name_element.text
                 except Exception as e:
                     logging.warning(f"Both selectors failed to find the product name: {e}")
-
+  # Try to find the product price
             try:
                 product_price_element = item.find_element(By.CSS_SELECTOR, "span.font-graphic > strong")
                 product_price = product_price_element.text
             except Exception as e:
                 logging.debug(f"Error finding product price: {e}")
-
+ # If any product data is found, append it to the list
             if any([image_src, product_name, product_price]):
                 products.append({
                     "image": image_src,

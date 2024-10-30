@@ -3,7 +3,7 @@ import sqlite3
 def create_connection(db_file):
     """Create a database connection to the SQLite database specified by db_file."""
     conn = None
-    try:
+    try: # Attempt to connect to the SQLite database
         conn = sqlite3.connect(db_file)
         return conn
     except sqlite3.Error as e:

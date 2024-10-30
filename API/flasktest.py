@@ -13,10 +13,12 @@ conn = create_connection('products.db')
 # Middleware Example: Logging Requests
 @app.before_request
 def log_request_info():
+      # Log the details of the incoming request
     logging.info(f"Request: {request.method} {request.url}")
 
 @app.after_request
 def log_response_info(response):
+    # Log the details of the response being sent back
     logging.info(f"Response: {response.status_code}")
     return response
 

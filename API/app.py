@@ -34,7 +34,7 @@ def log_response_info(response):
 def home():
     return "Welcome to the Price Comparison API"
 
-# Example API endpoint to retrieve products
+#  API endpoint to retrieve products
 @app.route('/products', methods=['GET'])
 def get_products():
     conn = get_db()
@@ -43,7 +43,9 @@ def get_products():
     rows = cursor.fetchall()
     
     products = []
+    # Iterate through each row returned from the database
     for row in rows:
+        # Map the row data to a product dictionary
         product = {
             'id': row[0],
             'image': row[1],
@@ -52,10 +54,11 @@ def get_products():
             'source': row[4]
         }
         products.append(product)
-    
+     # Return the list of products as a JSON response
     return jsonify(products)
 
 @app.teardown_appcontext
+ # Remove the database connection from the context
 def close_db_connection(exception):
     db = g.pop('db', None)
     if db is not None:

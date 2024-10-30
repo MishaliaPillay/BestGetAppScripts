@@ -12,16 +12,16 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def main():
-    # Step 1: Create a connection to the database
+    # connect to the database
     conn = create_connection('products.db')
     if conn is None:
         logging.error("Failed to create database connection. Exiting.")
         return
 
-    # Step 2: Create the products table
+    #  Create the products table
     create_table(conn)
 
-    # Step 3: Run the web scrapers and store data in the database
+    #  Run the web scrapers and te store data in the database
 
     try:
         logging.info("Running Woolworths scraper...")
@@ -51,7 +51,7 @@ def main():
     except Exception as e:
         logging.error(f"PnP scraper failed: {e}")
     
-    # Step 4: Close the database connection
+    # Close the database connection
     close_connection(conn)
 
 if __name__ == "__main__":
